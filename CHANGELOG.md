@@ -26,6 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed hardware detection typo (`$GPU` -> `$gpu`) in hardware-detect.sh
+- **Fixed power profile configuration bug**: Modified Omarchy's rules directly instead of creating conflicting custom file that was being overridden by alphabetical ordering
+- **Fixed idempotency in suspend toggle** (`10-system-config.sh`): Script was checking for wrong state file (`suspend-on` instead of `suspend-off`), causing toggle to flip on every run
+- **Fixed idempotency in PIA VPN** (`20-apps-setup.sh`): Now checks for `/usr/local/bin/piactl` to determine if installed, preventing installer from launching GUI on repeated runs
 
 ### Compatibility
 - **Tested and validated against Omarchy 3.4.1**
