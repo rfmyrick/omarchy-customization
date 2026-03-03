@@ -1,5 +1,0 @@
-# Custom power profile switching
-# On battery (unplugged): use power-saver instead of balanced
-SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="/usr/bin/powerprofilesctl set power-saver"
-# On AC (plugged in): use performance
-SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="/usr/bin/powerprofilesctl set performance"
