@@ -1,0 +1,24 @@
+# Logs and local state
+logs/
+*.log
+backups/
+markers/
+.local/
+local/
+state/
+
+# Temporary files
+*.tmp
+*.bak
+*~
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.directory
