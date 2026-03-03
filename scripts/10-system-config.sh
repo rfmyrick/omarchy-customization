@@ -118,17 +118,18 @@ setup_power_profiles() {
 
 # Enable suspend in system menu
 enable_suspend_menu() {
-	local toggle_file="$HOME/.local/state/omarchy/toggles/suspend-on"
+	local toggle_file="$HOME/.local/state/omarchy/toggles/suspend-off"
 
+	# If suspend-off file exists, suspend is currently disabled
 	if [[ -f "$toggle_file" ]]; then
-		print_success "Suspend is already enabled in system menu"
-	else
 		print_info "Enabling suspend in system menu..."
 		if run_cmd "omarchy-toggle-suspend" "Enable suspend in menu"; then
 			print_success "Suspend enabled in system menu"
 		else
 			record_failure "Enable suspend menu"
 		fi
+	else
+		print_success "Suspend is already enabled in system menu"
 	fi
 }
 

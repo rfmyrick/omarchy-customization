@@ -47,22 +47,14 @@ install_cider() {
 install_pia_vpn() {
 	print_step "Installing Private Internet Access VPN..."
 
-	# Check if PIA is already installed (command exists and service is active)
-	if command_exists piavpn && systemctl is-active --quiet piavpn 2>/dev/null; then
-		print_success "PIA VPN is already installed and running"
-		return 0
-	fi
+	# Check if PIA is already installed by looking for piactl
+	if [[ -f /usr/local/bin/piactl ]]; then
+		print_success "PIA VPN is already installed"
 
-	# Check if command exists but service is not running (needs setup)
-	if command_exists piavpn; then
-		print_warning "PIA VPN command exists but service is not active"
-		print_info "Attempting to enable PIA VPN service..."
-
-		if run_cmd "sudo systemctl enable --now piavpn" "Enable PIA VPN daemon"; then
-			print_success "PIA VPN service enabled and started"
-		else
-			print_warning "Could not enable PIA VPN service automatically"
-			print_info "You may need to run: sudo systemctl enable --now piavpn"
+		# Check if service is running
+		if ! systemctl is-active --quiet piavpn 2>/dev/null; then
+			print_info "Enabling PIA VPN daemon..."
+			run_cmd "sudo systemctl enable --now piavpn" "Enable PIA VPN daemon" || true
 		fi
 
 		return 0
