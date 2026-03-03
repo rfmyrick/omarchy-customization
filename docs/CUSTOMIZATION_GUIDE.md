@@ -107,17 +107,17 @@ HandleLidSwitchExternalPower=suspend
 HandleLidSwitch=hibernate
 ```
 
-### Power Profiles (`configs/udev/rules.d/`)
+### Power Profiles
 
-#### 99-power-profile-custom.rules
-
-Controls power profile switching when plugging/unplugging.
+The customization script modifies Omarchy's default power profile rule at `/etc/udev/rules.d/99-power-profile.rules` to use `power-saver` on battery instead of `balanced`.
 
 **Current behavior:**
 - On battery → power-saver
 - On AC → performance
 
 **To change:**
+
+Edit `/etc/udev/rules.d/99-power-profile.rules`:
 
 ```bash
 # Use balanced instead of power-saver on battery
@@ -126,6 +126,11 @@ SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="/usr/bi
 # Always use balanced
 SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="/usr/bin/powerprofilesctl set balanced"
 SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="/usr/bin/powerprofilesctl set balanced"
+```
+
+**To restore Omarchy's default:**
+```bash
+omarchy-refresh-config udev/rules.d/99-power-profile.rules
 ```
 
 ## Package Lists (`config/packages.conf`)

@@ -277,7 +277,7 @@ sudo pacman -S git
 
 2. **Check udev rules**:
    ```bash
-   cat /etc/udev/rules.d/99-power-profile-custom.rules
+   cat /etc/udev/rules.d/99-power-profile.rules
    ```
 
 3. **Reload udev rules**:
@@ -599,7 +599,8 @@ sed -i '/custom-overrides.conf/d' ~/.config/hypr/hyprland.conf
 # Remove system configs
 sudo rm /etc/systemd/sleep.conf.d/99-custom-sleep.conf
 sudo rm /etc/systemd/logind.conf.d/99-custom-lid.conf
-sudo rm /etc/udev/rules.d/99-power-profile-custom.rules
+# Note: Power profile rule is modified from Omarchy default
+# To restore Omarchy's default, run: omarchy-refresh-config
 
 # Remove installed packages (optional)
 sudo pacman -R cider piavpn-bin syncthing

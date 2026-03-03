@@ -19,10 +19,10 @@ Automatically switches power profiles based on AC power status.
 - **On battery (unplugged)**: Switches to `power-saver` mode
 - **On AC (plugged in)**: Switches to `performance` mode
 
-**File:** `configs/udev/rules.d/99-power-profile-custom.rules`
+**File:** `/etc/udev/rules.d/99-power-profile.rules` (modified from Omarchy default)
 
 ```bash
-# On battery: use power-saver
+# On battery: use power-saver (modified from Omarchy default of 'balanced')
 SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="/usr/bin/powerprofilesctl set power-saver"
 
 # On AC: use performance
@@ -156,16 +156,18 @@ HandleLidSwitchExternalPower=ignore
 
 ### Change Power Profiles
 
-Edit `configs/udev/rules.d/99-power-profile-custom.rules`:
+Edit `/etc/udev/rules.d/99-power-profile.rules`:
 
 ```bash
-# Use balanced on battery (less aggressive)
+# Use balanced on battery (less aggressive) - Omarchy default
 SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="/usr/bin/powerprofilesctl set balanced"
 
 # Always use balanced
 SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="/usr/bin/powerprofilesctl set balanced"
 SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="/usr/bin/powerprofilesctl set balanced"
 ```
+
+**Note:** The customization script modifies Omarchy's default rule file directly. If you want to revert to Omarchy's defaults, you can restore the original using `omarchy-refresh-config`.
 
 ## Monitoring
 
@@ -271,7 +273,7 @@ systemd-analyze cat-config systemd/logind.conf
 
 1. Check udev rules:
    ```bash
-   cat /etc/udev/rules.d/99-power-profile-custom.rules
+   cat /etc/udev/rules.d/99-power-profile.rules
    ```
 
 2. Reload udev rules:
