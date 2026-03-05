@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# Install all extra Omarchy themes in parallel
+# Install all extra Omarchy themes using omarchy-theme-install command
+# Uses sequential installation to avoid conflicts with omarchy-theme-set
 
-print_step "Installing all extra Omarchy themes (parallel mode)..."
+print_step "Installing all extra Omarchy themes..."
 
 # All extra themes from the Omarchy manual
 # Note: Removed broken themes (404 or moved):
@@ -33,14 +34,13 @@ THEMES=(
 	"https://github.com/dotsilva/omarchy-dotrb-theme"
 )
 
+# Install a single theme using omarchy-theme-install
 install_single_theme() {
 	local theme_url="$1"
 	local theme_name=$(basename "$theme_url" .git | sed -E 's/^omarchy-//; s/-theme$//')
-	local themes_dir="$HOME/.config/omarchy/themes"
-	local theme_path="$themes_dir/$theme_name"
-	local temp_dir="/tmp/omarchy-theme-$theme_name-$$"
 
-	if [[ -d "$theme_path" ]]; then
+	# Check if already installed
+	if [[ -d "$HOME/.config/omarchy/themes/$theme_name" ]]; then
 		log_info "Theme already installed: $theme_name"
 		return 0
 	fi
@@ -48,28 +48,16 @@ install_single_theme() {
 	log_info "Installing theme: $theme_name"
 
 	if [[ "${DRY_RUN:-false}" == true ]]; then
-		echo "[DRY-RUN] Would install theme: $theme_name"
+		echo "[DRY-RUN] Would install theme: $theme_name from $theme_url"
 		return 0
 	fi
 
-	# Create themes directory if it doesn't exist
-	mkdir -p "$themes_dir"
-
-	# Clone to temp directory first (safer than direct clone to themes dir)
-	if ! git clone --depth 1 "$theme_url" "$temp_dir" 2>/dev/null; then
-		log_error "Failed to clone theme: $theme_name from $theme_url"
-		rm -rf "$temp_dir" 2>/dev/null || true
-		return 1
-	fi
-
-	# Move to themes directory
-	if mv "$temp_dir" "$theme_path"; then
+	# Use omarchy-theme-install command (installs and temporarily sets theme)
+	if omarchy-theme-install "$theme_url" 2>/dev/null; then
 		log_success "Installed theme: $theme_name"
-		rm -rf "$temp_dir" 2>/dev/null || true
 		return 0
 	else
-		log_error "Failed to move theme to themes directory: $theme_name"
-		rm -rf "$temp_dir" 2>/dev/null || true
+		log_error "Failed to install theme: $theme_name"
 		return 1
 	fi
 }
@@ -98,42 +86,22 @@ set_ethereal_theme() {
 	fi
 }
 
-# Install themes in parallel with max 5 concurrent
+# Install all themes sequentially (not parallel, to avoid omarchy-theme-set conflicts)
 install_all_themes() {
 	local installed=0
 	local failed=0
-	local max_parallel=5
-	local running=0
-	local pids=()
 
-	print_info "Installing ${#THEMES[@]} themes with max $max_parallel concurrent connections..."
+	print_info "Installing ${#THEMES[@]} themes sequentially using omarchy-theme-install..."
 
 	for theme_url in "${THEMES[@]}"; do
-		# Wait if we've hit the concurrency limit
-		while [[ $running -ge $max_parallel ]]; do
-			wait -n 2>/dev/null || true
-			running=$((running - 1))
-		done
-
-		# Start theme installation in background
-		install_single_theme "$theme_url" &
-		pids+=($!)
-		running=$((running + 1))
+		if install_single_theme "$theme_url"; then
+			((installed++))
+		else
+			((failed++))
+		fi
 	done
 
-	# Wait for all background jobs
-	wait
-
-	# Count results (skip in dry-run mode)
 	if [[ "${DRY_RUN:-false}" != true ]]; then
-		for theme_url in "${THEMES[@]}"; do
-			local theme_name=$(basename "$theme_url" .git | sed -E 's/^omarchy-//; s/-theme$//')
-			if [[ -d "$HOME/.config/omarchy/themes/$theme_name" ]]; then
-				((installed++))
-			else
-				((failed++))
-			fi
-		done
 		print_success "Theme installation complete ($installed installed, $failed failed)"
 	else
 		print_success "Theme installation dry-run complete (${#THEMES[@]} themes would be installed)"
