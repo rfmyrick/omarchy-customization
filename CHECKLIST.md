@@ -69,6 +69,11 @@ Complete this checklist before and after running the customization scripts.
    - Configure auto-connect (see [docs/VPN_SETUP.md](docs/VPN_SETUP.md))
    - Test the connection
 
+7. [ ] **Plex Media Server**
+   - Launch Plex from the app menu or run: `flatpak run tv.plex.PlexDesktop`
+   - Sign in with your Plex account credentials
+   - The application is pre-installed via Flatpak but requires authentication to use
+
 ### Verification Steps
 
 - [ ] **Cider**
@@ -107,6 +112,11 @@ Complete this checklist before and after running the customization scripts.
 
 - [ ] **Syncthing**
   - Access web UI: http://localhost:8384
+
+- [ ] **Plex**
+  - Launch from app menu or run: `flatpak run tv.plex.PlexDesktop`
+  - Verify Plex opens and prompts for authentication
+  - Sign in with your Plex account
   - Verify service is running: `systemctl --user status syncthing`
   - See [docs/SYNCTHING_SETUP.md](docs/SYNCTHING_SETUP.md) for device pairing
 
@@ -154,6 +164,10 @@ After initial setup, you may want to:
   - Tailscale: `omarchy-install-tailscale`
   - Docker: `omarchy-install-docker-dbs`
   - VS Code: `omarchy-install-vscode`
+
+- [ ] **Update Flatpak applications periodically**
+  - Run: `flatpak update` to update all installed Flatpak apps
+  - This includes Plex and any other Flatpaks you install later
 
 ## Troubleshooting
 

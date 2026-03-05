@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CHANGELOG.md using Keep a Changelog format
 - .gitignore for repository hygiene
 - Full idempotency across all scripts with marker files, pattern checks, and backups
+- **Flatpak package manager support** (`scripts/16-flatpak-setup.sh`) with Flathub repository
+- **Plex Media Server client** installation via Flatpak (`tv.plex.PlexDesktop`)
 
 ### Changed
 - Updated hibernate delay from 60min to 90min (consistent across all configs)

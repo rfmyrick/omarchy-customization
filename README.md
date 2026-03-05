@@ -22,6 +22,7 @@ This repository provides:
 - **Cider** - Apple Music client (requires manual download)
 - **Private Internet Access VPN** - VPN client with auto-connect
 - **Syncthing** - File synchronization with firewall rules
+- **Plex Media Server** - Media client (via Flatpak, requires Plex account)
 
 ### Web Apps
 - **t3.chat** - AI chat interface (replaces ChatGPT binding)

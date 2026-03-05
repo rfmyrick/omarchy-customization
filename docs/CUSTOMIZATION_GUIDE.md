@@ -133,6 +133,34 @@ SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="/usr/bi
 omarchy-refresh-config udev/rules.d/99-power-profile.rules
 ```
 
+### Flatpak Applications
+
+The customization scripts automatically set up Flatpak and install Plex Media Server client.
+
+**Installed Flatpaks:**
+- **Plex Desktop** (`tv.plex.PlexDesktop`) - Media server client
+
+**Authentication Required:**
+Plex requires signing in with your Plex account on first launch. The application will prompt for credentials when opened.
+
+**Manual Management:**
+```bash
+# Install Plex (if not already installed)
+flatpak install flathub tv.plex.PlexDesktop
+
+# Update all Flatpaks
+flatpak update
+
+# List installed Flatpaks
+flatpak list
+
+# Launch Plex
+flatpak run tv.plex.PlexDesktop
+```
+
+**Plex Data Location:**
+Plex stores its data in: `~/.var/app/tv.plex.PlexDesktop/`
+
 ## Package Lists (`config/packages.conf`)
 
 ### Adding Simple Packages
