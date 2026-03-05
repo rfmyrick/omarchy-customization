@@ -1,9 +1,12 @@
 #!/bin/bash
 
 # Flatpak setup and application installation
-# This script installs flatpak, adds Flathub repository, and installs Plex Media Server client
+# This script installs flatpak, adds Flathub repository, and installs configured Flatpak apps
 
 print_step "Setting up Flatpak and installing applications..."
+
+# Configuration file for Flatpak packages
+FLATPAK_CONFIG="$SCRIPT_DIR/config/flatpaks.conf"
 
 # Install flatpak package and add Flathub repository
 setup_flatpak() {
@@ -34,32 +37,57 @@ setup_flatpak() {
 	fi
 }
 
-# Install Plex Media Server client via Flatpak
-install_plex() {
-	print_step "Installing Plex Media Server client..."
-
-	# Check if Plex is already installed via flatpak
-	if flatpak list --app 2>/dev/null | grep -q "tv.plex.PlexDesktop"; then
-		print_success "Plex is already installed"
+# Install configured Flatpak applications
+install_flatpaks() {
+	# Check if config file exists
+	if [[ ! -f "$FLATPAK_CONFIG" ]]; then
+		print_warning "Flatpak config file not found: $FLATPAK_CONFIG"
+		print_info "Skipping Flatpak application installation"
 		return 0
 	fi
 
-	print_info "Installing Plex Desktop from Flathub..."
-	print_info "Note: Plex will require authentication on first launch"
+	# Source the config file to get FLATPAK_PACKAGES array
+	source "$FLATPAK_CONFIG"
 
-	if run_cmd "flatpak install -y flathub tv.plex.PlexDesktop" "Install Plex Desktop"; then
-		print_success "Plex Desktop installed successfully"
-		print_info "Launch Plex from the app menu or with: flatpak run tv.plex.PlexDesktop"
-		print_info "Note: You'll need to sign in with your Plex account on first launch"
-	else
-		print_error "Failed to install Plex Desktop"
-		record_failure "Plex Desktop installation"
-		return 1
+	# Check if there are any packages to install
+	if [[ ${#FLATPAK_PACKAGES[@]} -eq 0 ]]; then
+		print_info "No Flatpak packages configured"
+		return 0
 	fi
+
+	print_step "Installing Flatpak applications..."
+
+	for app_id in "${FLATPAK_PACKAGES[@]}"; do
+		# Skip comments and empty lines
+		[[ "$app_id" =~ ^#.*$ ]] && continue
+		[[ -z "$app_id" ]] && continue
+
+		# Check if already installed
+		if flatpak list --app 2>/dev/null | grep -q "${app_id}$"; then
+			print_success "$app_id is already installed"
+			continue
+		fi
+
+		print_info "Installing $app_id..."
+		if run_cmd "flatpak install -y flathub $app_id" "Install $app_id"; then
+			print_success "$app_id installed successfully"
+
+			# Special handling for known apps
+			case "$app_id" in
+			tv.plex.PlexDesktop)
+				print_info "Note: Plex requires authentication on first launch"
+				print_info "Launch with: flatpak run $app_id"
+				;;
+			esac
+		else
+			print_error "Failed to install $app_id"
+			record_failure "Flatpak installation: $app_id"
+		fi
+	done
 }
 
 # Run setup functions
 setup_flatpak
-install_plex
+install_flatpaks
 
-print_success "Flatpak and Plex setup complete"
+print_success "Flatpak setup complete"
