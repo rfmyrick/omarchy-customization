@@ -44,6 +44,7 @@ SCRIPTS=(
 	"10-system-config.sh"
 	"15-packages-complex.sh"
 	"16-flatpak-setup.sh"
+	"17-hidpi-config.sh"
 	"20-apps-setup.sh"
 	"30-webapps.sh"
 	"40-hyprland-overrides.sh"
