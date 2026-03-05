@@ -86,8 +86,47 @@ install_flatpaks() {
 	done
 }
 
+# Configure Flatpak apps for HiDPI displays
+configure_flatpak_hidpi() {
+	print_step "Configuring Flatpak apps for HiDPI displays..."
+
+	# Detect if we have a HiDPI display (check common high DPI resolutions)
+	local has_hidpi=false
+	if command -v xrandr &>/dev/null; then
+		# Check for displays with scale > 1.0 or high resolution
+		if xrandr --listmonitors 2>/dev/null | grep -E "[0-9]+/[0-9]+x[0-9]+/[0-9]+" | grep -qv " 96/"; then
+			has_hidpi=true
+		fi
+	fi
+
+	# Also check if GDK_SCALE is set to 2 (Omarchy HiDPI setting)
+	if [[ "${GDK_SCALE:-1}" == "2" ]]; then
+		has_hidpi=true
+	fi
+
+	if [[ "$has_hidpi" == "true" ]]; then
+		print_info "HiDPI display detected, configuring apps..."
+
+		# Configure Plex for HiDPI
+		if flatpak list --app 2>/dev/null | grep -q "tv.plex.PlexDesktop"; then
+			print_info "Configuring Plex for HiDPI display..."
+			if ! flatpak override --user tv.plex.PlexDesktop --show 2>/dev/null | grep -q "QT_STYLE_OVERRIDE"; then
+				flatpak override --user tv.plex.PlexDesktop --env=QT_AUTO_SCREEN_SCALE_FACTOR=1 --env=QT_STYLE_OVERRIDE=Fusion
+				print_success "Plex configured for HiDPI (auto-scaling enabled)"
+			else
+				print_success "Plex already configured for HiDPI"
+			fi
+		fi
+
+		# Add more HiDPI app configurations here as needed
+	else
+		print_info "Standard DPI display detected, skipping HiDPI configuration"
+	fi
+}
+
 # Run setup functions
 setup_flatpak
 install_flatpaks
+configure_flatpak_hidpi
 
 print_success "Flatpak setup complete"
