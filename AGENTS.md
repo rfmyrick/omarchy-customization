@@ -20,15 +20,18 @@ Use the skill tool with name "omarchy"
 
 ## Architecture Patterns
 
-### 1. Override Pattern (Hyprland)
-Instead of editing `~/.config/hypr/hyprland.conf`, add a source line:
-```bash
-echo "source = ~/.config/hypr/custom-overrides.conf" >> ~/.config/hypr/hyprland.conf
-```
+### 1. Direct Configuration (Hyprland)
+Edit files directly in `~/.config/hypr/` - these are your personal configurations:
+- `bindings.conf` - Keybindings and shortcuts
+- `window-rules.conf` - Window behavior rules
+- `monitors.conf` - Display configuration
+- `input.conf` - Keyboard/mouse settings
+- `looknfeel.conf` - Appearance settings
+- `autostart.conf` - Startup applications
 
-All customizations go in `custom-overrides.conf`:
-- Use `unbind` before rebinding keys
-- Source additional configs with `source =`
+These files automatically override Omarchy's defaults.
+
+**Note:** Use `unbind` before rebinding keys that are already bound.
 
 ### 2. Idempotency
 Every script must be safe to run multiple times:
@@ -216,7 +219,7 @@ Before committing changes:
 4. Document in docs/
 
 ### Adding a New Keybinding
-1. Edit `configs/hypr/custom-overrides.conf`
+1. Edit `~/.config/hypr/bindings.conf`
 2. Add unbind directive first
 3. Add new bindd directive
 4. Document what was previously bound

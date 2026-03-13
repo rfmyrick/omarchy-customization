@@ -15,15 +15,21 @@ All configuration files are in the `configs/` directory. These are production-re
 
 ## Configuration Files
 
-### Hyprland (`configs/hypr/`)
+### Hyprland (`~/.config/hypr/`)
 
-#### custom-overrides.conf
+Hyprland configuration files in `~/.config/hypr/` are your personal customizations. These files are sourced by Omarchy's default configuration and override any defaults.
 
-This is the main file for Hyprland customizations. It overrides Omarchy's defaults.
+**Main configuration files:**
+- `bindings.conf` - Custom keybindings and application shortcuts
+- `window-rules.conf` - Window behavior rules
+- `monitors.conf` - Display/monitor configuration
+- `input.conf` - Keyboard and mouse settings
+- `looknfeel.conf` - Appearance settings
+- `autostart.conf` - Startup applications
 
-**Current overrides:**
-- `SUPER+SHIFT+M` → Cider (Apple Music)
-- `SUPER+SHIFT+A` → t3.chat (AI chat)
+#### bindings.conf
+
+This file contains custom keybindings that override or extend Omarchy's defaults.
 
 **To add your own keybindings:**
 
@@ -307,7 +313,7 @@ cat ~/.local/share/omarchy-customization/logs/latest.log
 
 ### Change Keybindings
 
-Edit `configs/hypr/custom-overrides.conf`:
+Edit `~/.config/hypr/bindings.conf`:
 
 ```bash
 # Change file manager from Super+Shift+F to Super+E

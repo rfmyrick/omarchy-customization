@@ -27,12 +27,14 @@ Take a moment to review the configuration files in the `configs/` directory:
 # List all config files
 ls -la configs/
 
-# Review Hyprland overrides
-cat configs/hypr/custom-overrides.conf
+# Review window rules template
+cat configs/hypr/window-rules.conf
 
 # Review system configurations
 cat configs/systemd/sleep.conf.d/99-custom-sleep.conf
 ```
+
+Note: Hyprland configurations (bindings, window rules, etc.) are maintained directly in `~/.config/hypr/` after installation.
 
 Make any desired changes before running the installer.
 

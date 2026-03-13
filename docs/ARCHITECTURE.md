@@ -14,27 +14,33 @@ The goal of this project is to customize Omarchy Linux systems while ensuring:
 
 ## Core Patterns
 
-### 1. Override Pattern (The Key to Update Survival)
+### 1. Direct Configuration (The Key to Update Survival)
 
-Instead of modifying Omarchy's default configuration files, we add a single line to source our customizations:
+Omarchy sources user configuration files directly from `~/.config/hypr/`. These files override Omarchy's defaults:
 
-```bash
-# In ~/.config/hypr/hyprland.conf, add:
-source = ~/.config/hypr/custom-overrides.conf
+```
+~/.config/hypr/hyprland.conf
+├── Omarchy defaults (from ~/.local/share/omarchy/default/hypr/)
+└── User configs (from ~/.config/hypr/)
+    ├── monitors.conf
+    ├── input.conf
+    ├── bindings.conf
+    ├── looknfeel.conf
+    ├── autostart.conf
+    └── window-rules.conf
 ```
 
 **Why this works:**
-- Omarchy's `hyprland.conf` sources Omarchy defaults, then user configs
-- By adding our source line at the end, our configs override defaults
-- When Omarchy updates, our single source line persists
-- We re-add it if needed during script runs
-- All our customizations are in separate files that won't be touched by updates
+- Omarchy's `hyprland.conf` sources Omarchy defaults first, then user configs
+- Files in `~/.config/hypr/` override the defaults
+- When Omarchy updates, it doesn't modify your `~/.config/hypr/` files
+- Your personal configurations persist across updates
+- You edit these files directly for all customizations
 
 **Example flow:**
-1. Omarchy update replaces `~/.config/hypr/hyprland.conf`
-2. Script detects our source line is missing
-3. Script re-adds: `source = ~/.config/hypr/custom-overrides.conf`
-4. Our customizations in `custom-overrides.conf` continue to work
+1. Omarchy update replaces `~/.local/share/omarchy/default/hypr/` files
+2. Your `~/.config/hypr/` files remain untouched
+3. Your customizations in `bindings.conf`, `window-rules.conf`, etc. continue to work
 
 ### 2. Idempotency
 
@@ -47,8 +53,8 @@ if ! pacman -Q "$pkg" &>/dev/null; then
 fi
 
 # Check if config exists before modifying
-if ! grep -q "custom-overrides" "$hypr_conf"; then
-    echo "source = ..." >> "$hypr_conf"
+if [[ ! -f "$config_file" ]]; then
+    cp "$source" "$config_file"
 fi
 
 # Use marker files for complex operations
@@ -210,8 +216,7 @@ Detect Hardware
 ```
 configs/
 ├── hypr/
-│   ├── custom-overrides.conf    # Main Hyprland overrides
-│   └── window-rules.conf        # Window behavior rules
+│   └── window-rules.conf        # Window behavior rules (template)
 ├── systemd/
 │   ├── sleep.conf.d/            # Sleep/hibernate settings
 │   └── logind.conf.d/           # Lid switch behavior

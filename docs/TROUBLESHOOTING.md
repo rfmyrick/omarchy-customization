@@ -301,23 +301,17 @@ sudo pacman -S git
 
 **Solutions:**
 
-1. **Check if override is sourced**:
+1. **Check keybindings file**:
    ```bash
-   grep "custom-overrides" ~/.config/hypr/hyprland.conf
-   # Should show: source = ~/.config/hypr/custom-overrides.conf
+   cat ~/.config/hypr/bindings.conf | grep -E "(Cider|t3.chat)"
    ```
 
-2. **Check override file exists**:
-   ```bash
-   ls -la ~/.config/hypr/custom-overrides.conf
-   ```
-
-3. **Check keybindings**:
+2. **Verify keybindings are loaded**:
    ```bash
    omarchy-menu-keybindings --print | grep -E "(Cider|t3.chat)"
    ```
 
-4. **Reload Hyprland**:
+3. **Reload Hyprland**:
    ```bash
    hyprctl reload
    # or log out and back in
@@ -374,9 +368,9 @@ sudo pacman -S git
    cat ~/.config/hypr/window-rules.conf
    ```
 
-3. **Check if sourced**:
+3. **Check if window-rules.conf is sourced**:
    ```bash
-   grep "window-rules" ~/.config/hypr/custom-overrides.conf
+   grep "window-rules" ~/.config/hypr/hyprland.conf
    ```
 
 4. **Reload Hyprland**:
@@ -589,25 +583,17 @@ omarchy-reinstall-configs
 To remove all customizations:
 
 ```bash
-# Remove custom configs
-rm ~/.config/hypr/custom-overrides.conf
+# Remove custom configs (optional - your personal configs in ~/.config/hypr/)
 rm ~/.config/hypr/window-rules.conf
-
-# Remove source line from hyprland.conf
-sed -i '/custom-overrides.conf/d' ~/.config/hypr/hyprland.conf
 
 # Remove system configs
 sudo rm /etc/systemd/sleep.conf.d/99-custom-sleep.conf
 sudo rm /etc/systemd/logind.conf.d/99-custom-lid.conf
 # Note: Power profile rule is modified from Omarchy default
-# To restore Omarchy's default, run: omarchy-refresh-config
+# To restore Omarchy's default, run: omarchy-refresh-config udev/rules.d/99-power-profile.rules
 
 # Remove installed packages (optional)
-sudo pacman -R cider piavpn-bin syncthing
-
-# Remove markers
-rm -rf ~/.local/share/omarchy-customization/
-```
+sudo pacman -R cider piavpn-bin syncthing flatpak
 
 ## Getting Help
 

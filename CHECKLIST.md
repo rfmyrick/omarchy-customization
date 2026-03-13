@@ -26,9 +26,9 @@ Complete this checklist before and after running the customization scripts.
 
 - [ ] Ensure stable internet connection
 - [ ] Connect to power source (for hibernation setup)
-- [ ] Review `configs/` directory and customize as desired:
-  - [ ] `configs/hypr/custom-overrides.conf` - Keybindings
-  - [ ] `configs/hypr/window-rules.conf` - Window rules
+- [ ] Review `configs/` directory for examples and customize as desired:
+  - [ ] `~/.config/hypr/bindings.conf` - Keybindings (edit directly in ~/.config/hypr/)
+  - [ ] `~/.config/hypr/window-rules.conf` - Window rules (edit directly in ~/.config/hypr/)
   - [ ] `configs/systemd/sleep.conf.d/99-custom-sleep.conf` - Sleep settings
   - [ ] `configs/systemd/logind.conf.d/99-custom-lid.conf` - Lid behavior
 - [ ] Run `./install.sh --dry-run` to preview changes
@@ -143,7 +143,7 @@ After initial setup, you may want to:
   - Use `omarchy-theme-bg-next` to cycle through them
 
 - [ ] **Customize keybindings further**
-  - Edit: `~/.config/hypr/custom-overrides.conf`
+  - Edit: `~/.config/hypr/bindings.conf`
   - Add your own bindings
   - Use `unbind` before rebinding existing keys
 
@@ -180,9 +180,6 @@ If something isn't working:
 
 2. Verify the customization was applied:
    ```bash
-   # Check if override is sourced
-grep "custom-overrides" ~/.config/hypr/hyprland.conf
-   
    # Check keybindings
    omarchy-menu-keybindings --print | grep -E "(Cider|t3.chat)"
    ```
