@@ -51,6 +51,7 @@ SCRIPTS=(
 	"50-keybindings.sh"
 	"55-starship.sh"
 	"60-hardware-specific.sh"
+	"61-thunderbolt-fix.sh"
 	"70-themes.sh"
 	"80-configs-only.sh"
 	"90-terminals.sh"
