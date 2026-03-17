@@ -276,7 +276,7 @@ EOF
 
 	chmod +x "$recovery_script"
 	print_success "Created emergency recovery script"
-	print_info "Usage: dock-recovery (or SUPER+SHIFT+D if keybinding is configured)"
+	print_info "Usage: dock-recovery (or SUPER+SHIFT+R if keybinding is configured)"
 }
 
 # Fix 6: Add emergency keybinding to Hyprland config
@@ -284,7 +284,7 @@ add_emergency_keybinding() {
 	print_info "Adding emergency recovery keybinding..."
 
 	local bindings_file="$HOME/.config/hypr/bindings.conf"
-	local recovery_line='bindd = SUPER SHIFT, D, Emergency Dock Recovery, exec, ~/.local/bin/dock-recovery'
+	local recovery_line='bindd = SUPER SHIFT, R, Emergency Dock Recovery, exec, ~/.local/bin/dock-recovery'
 
 	if [[ ! -f "$bindings_file" ]]; then
 		print_warning "bindings.conf not found - skipping keybinding"
@@ -306,7 +306,7 @@ add_emergency_keybinding() {
 	echo "# Emergency dock recovery keybinding" >>"$bindings_file"
 	echo "$recovery_line" >>"$bindings_file"
 
-	print_success "Added emergency recovery keybinding (SUPER+SHIFT+D)"
+	print_success "Added emergency recovery keybinding (SUPER+SHIFT+R)"
 }
 
 # Run all fixes
@@ -326,6 +326,6 @@ print_info "  - Preserve all windows (no more closing!)"
 print_info ""
 print_info "Emergency recovery:"
 print_info "  - Run: dock-recovery (in terminal)"
-print_info "  - Or press: SUPER+SHIFT+D"
+print_info "  - Or press: SUPER+SHIFT+R"
 print_info ""
 print_info "Note: You may need to log out and back in for all changes to take effect"
