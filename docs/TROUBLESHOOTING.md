@@ -517,6 +517,54 @@ sudo pacman -S git
 5. **Restart**:
    - Kernel parameter changes require restart
 
+### Thunderbolt Dock Lockups (HP ZBook)
+
+**Symptom:**
+- System locks up when connecting/disconnecting Thunderbolt dock
+- Trackpad stops working
+- Keyboard stops working
+- Display goes blank or doesn't switch
+- Issues occur inconsistently
+
+**Quick Fix:**
+```bash
+# If you can get to a terminal, reload Hyprland:
+hyprctl reload
+```
+
+**Permanent Solutions:**
+
+The `scripts/61-thunderbolt-fix.sh` applies these fixes automatically:
+
+1. **Remove conflicting logind config**:
+   ```bash
+   sudo rm -f /etc/systemd/logind.conf.d/lid.conf
+   ```
+
+2. **Disable USB autosuspend** (creates udev rule):
+   ```bash
+   sudo tee /etc/udev/rules.d/99-thunderbolt-dock.rules << 'EOF'
+   ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="03", ATTR{power/control}="on"
+   ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{power/control}="on"
+   ACTION=="add", SUBSYSTEM=="usb", ATTR{bDeviceClass}=="09", ATTR{power/control}="on"
+   ACTION=="add|remove", SUBSYSTEM=="thunderbolt", RUN+="/bin/sh -c 'sleep 2 && /usr/bin/hyprctl reload 2>/dev/null || true'"
+   EOF
+   sudo udevadm control --reload-rules
+   ```
+
+3. **Disable kernel autosuspend**:
+   ```bash
+   sudo tee /etc/modprobe.d/thunderbolt-dock.conf << 'EOF'
+   options usbcore autosuspend=-1
+   options thunderbolt auto_suspend=0
+   EOF
+   sudo limine-mkinitcpio
+   ```
+
+4. **Restart required** after applying all fixes.
+
+**See also:** [docs/THUNDERBOLT_FIX.md](THUNDERBOLT_FIX.md) for complete documentation.
+
 ## Logging and Debugging
 
 ### View installation logs

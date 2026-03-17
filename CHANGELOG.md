@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-03-17
+
+### Added
+- Thunderbolt dock hotplug fix for HP ZBook Ultra G1a (61-thunderbolt-fix.sh)
+  - Resolves lockups when connecting/disconnecting Thunderbolt docks
+  - Fixes input device issues (trackpad/keyboard stops working)
+  - Auto-reloads Hyprland on dock connect/disconnect
+  - Disables USB/Thunderbolt autosuspend
+- Dedicated HiDPI configuration script (17-hidpi-config.sh)
+  - Separated from Flatpak setup for better organization
+  - Configures Plex and other apps for HiDPI displays
+  - Uses explicit 2x scaling for optimal display quality
+- Comprehensive Thunderbolt troubleshooting documentation (docs/THUNDERBOLT_FIX.md)
+- Starship prompt configuration script (55-starship.sh)
+
+### Changed
+- Separated HiDPI configuration from Flatpak installation script
+  - Flatpak script now focuses only on app installation
+  - HiDPI configuration moved to dedicated script (17-hidpi-config.sh)
+  - Better single-responsibility principle adherence
+- Updated PIA VPN installation to not use sudo
+  - Installer handles privilege escalation internally
+  - Better compatibility with PIA's installer requirements
+- Removed llmfit from package list (AUR build errors)
+
+### Fixed
+- Hyprland config concatenation issue (missing newline before source directive)
+- PIA VPN installation failures due to incorrect sudo usage
+- Added missing 55-starship.sh and 61-thunderbolt-fix.sh to install.sh
+
 ## [1.0.0] - 2025-03-03
 
 ### Added
@@ -54,12 +84,14 @@ Comprehensive documentation is available:
 - [README.md](README.md) - Overview and quick start
 - [AGENTS.md](AGENTS.md) - Guidelines for AI agents
 - [CHECKLIST.md](CHECKLIST.md) - Pre/post installation tasks
+- [CHANGELOG.md](CHANGELOG.md) - Version history
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - Technical architecture
 - [docs/CUSTOMIZATION_GUIDE.md](docs/CUSTOMIZATION_GUIDE.md) - Customization instructions
 - [docs/POWER_MANAGEMENT.md](docs/POWER_MANAGEMENT.md) - Power settings
 - [docs/VPN_SETUP.md](docs/VPN_SETUP.md) - VPN configuration
 - [docs/SYNCTHING_SETUP.md](docs/SYNCTHING_SETUP.md) - Syncthing setup
 - [docs/HARDWARE_SUPPORT.md](docs/HARDWARE_SUPPORT.md) - Hardware-specific configs
+- [docs/THUNDERBOLT_FIX.md](docs/THUNDERBOLT_FIX.md) - Thunderbolt dock troubleshooting
 - [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) - Common issues
 
 ## System Requirements
@@ -72,6 +104,8 @@ Comprehensive documentation is available:
 
 ## Known Limitations
 
+- HP ZBook Ultra G1a may experience Thunderbolt dock lockups without the fix applied
+  (See scripts/61-thunderbolt-fix.sh and docs/THUNDERBOLT_FIX.md)
 - NVIDIA kernel parameters require manual configuration when using Limine bootloader
   (Omarchy 3.4.1 uses Limine instead of GRUB)
 - Some hardware-specific configurations may require manual adjustments

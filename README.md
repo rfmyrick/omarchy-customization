@@ -32,8 +32,11 @@ This repository provides:
 - Ethereal theme with all extra themes installed
 - Hyprland overrides (survives Omarchy updates)
 
-### Utilities
-- Modern CLI tools (fzf, ripgrep, fd, bat, eza, etc.)
+### Hardware-Specific Fixes
+- **Thunderbolt Dock Support** - Fixes lockups when connecting/disconnecting docks (HP ZBook)
+- **HiDPI Display Configuration** - Optimizes applications for high-DPI displays (2880x1800, 4K)
+- **Input Device Power Management** - Prevents trackpad/keyboard issues on dock hotplug
+- **Automatic Display Reload** - Hyprland auto-reloads when dock connects/disconnects
 
 ## Prerequisites
 

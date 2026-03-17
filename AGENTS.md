@@ -131,14 +131,17 @@ Use functions from `scripts/lib/hardware-detect.sh`:
 ### Numbered Scripts (run in order)
 - `00-prerequisites.sh` - Setup, checks
 - `05-packages-simple.sh` - Simple package installs
-- `10-system-config.sh` - System-level configs
+- `10-system-config.sh` - System-level configs (power, hibernation)
 - `15-packages-complex.sh` - Complex packages (Syncthing)
+- `16-flatpak-setup.sh` - Flatpak setup and app installation
+- `17-hidpi-config.sh` - HiDPI display configuration
 - `20-apps-setup.sh` - Cider, PIA VPN
 - `30-webapps.sh` - Web apps (t3.chat)
 - `40-hyprland-overrides.sh` - Hyprland override source
 - `50-keybindings.sh` - Custom keybindings
 - `55-starship.sh` - Starship prompt configuration
 - `60-hardware-specific.sh` - Hardware configs
+- `61-thunderbolt-fix.sh` - Thunderbolt dock hotplug fixes (HP ZBook)
 - `70-themes.sh` - Install all themes
 - `80-configs-only.sh` - Config-only changes
 - `90-terminals.sh` - Terminal configs (placeholder)

@@ -117,8 +117,14 @@ Complete this checklist before and after running the customization scripts.
   - Launch from app menu or run: `flatpak run tv.plex.PlexDesktop`
   - Verify Plex opens and prompts for authentication
   - Sign in with your Plex account
-  - Verify service is running: `systemctl --user status syncthing`
-  - See [docs/SYNCTHING_SETUP.md](docs/SYNCTHING_SETUP.md) for device pairing
+  - Verify display scaling is correct (not blurry)
+
+- [ ] **Thunderbolt Dock** (if you have a dock)
+  - Connect dock - verify external display appears
+  - Check trackpad works
+  - Check keyboard works
+  - Disconnect dock - verify laptop display returns
+  - If issues occur, see [docs/THUNDERBOLT_FIX.md](docs/THUNDERBOLT_FIX.md)
 
 ### System Verification
 

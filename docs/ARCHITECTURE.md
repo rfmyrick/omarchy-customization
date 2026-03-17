@@ -297,6 +297,34 @@ if [[ "$RESTART_NEEDED" == true ]]; then
 fi
 ```
 
+## Specialized Scripts
+
+### Flatpak Setup (16-flatpak-setup.sh)
+
+Installs Flatpak and applications from Flathub:
+- Sets up Flatpak package manager
+- Adds Flathub repository
+- Installs configured Flatpak apps (Plex, etc.)
+- Each app can have post-install configuration
+
+### HiDPI Configuration (17-hidpi-config.sh)
+
+Configures applications for high-DPI displays:
+- Detects HiDPI displays (GDK_SCALE=2 or high DPI)
+- Configures Flatpak apps (Plex with 2x scaling)
+- Sets up Qt application scaling
+- Idempotent: only applies if not already configured
+
+### Thunderbolt Dock Fix (61-thunderbolt-fix.sh)
+
+Fixes HP ZBook lockups when connecting/disconnecting Thunderbolt docks:
+- Removes conflicting logind configurations
+- Disables USB autosuspend for input devices
+- Disables Thunderbolt autosuspend
+- Creates udev rules for dock hotplug handling
+- Auto-reloads Hyprland on display changes
+- Applies kernel module options for power management
+
 ## Best Practices
 
 ### When Adding New Features
